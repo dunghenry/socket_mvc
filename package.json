@@ -1,0 +1,17 @@
+{
+  "name": "socket.io_mvc",
+  "version": "0.0.1",
+  "description": "socket.io_mvc",
+  "dependencies": {
+    "dotenv": "^16.0.2",
+    "ejs": "^3.1.8",
+    "express": "^4.17.1",
+    "socket.io": "^4.1.2"
+  },
+  "scripts": {
+    "start": "nodemon --inspect src/index.js"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
