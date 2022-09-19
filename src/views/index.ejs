@@ -68,7 +68,11 @@
   </form>
   <script src="/socket.io/socket.io.js"></script>
   <script>
-    const socket = io('http://localhost:4000');
+    const socket = io('http://localhost:4000', {
+      extraHeaders: {
+        token: 'bearer:access-token1'
+      }
+    });
     const messages = document.getElementById('messages');
     const form = document.getElementById('form');
     const input = document.getElementById('input');
@@ -81,10 +85,14 @@
     });
 
     socket.on('chat message', function (msg) {
-      var item = document.createElement('li');
+      const item = document.createElement('li');
       item.textContent = msg;
       messages.appendChild(item);
       window.scrollTo(0, document.body.scrollHeight);
+    });
+
+    socket.on('connect_error', function (error) {
+      console.log(error.message);
     });
   </script>
 </body>

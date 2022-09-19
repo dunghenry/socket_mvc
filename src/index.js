@@ -1,11 +1,14 @@
 const app = require("express")();
 const http = require("http").Server(app);
-const io = require("socket.io")(http);
+const io = require("socket.io")(http, {
+  cors: {
+    origin: '*'
+  }
+});
 const dotenv = require("dotenv");
 dotenv.config();
 const port = process.env.PORT || 4000;
 const SocketServices = require("./services/chat.service");
-const fetchData = require("./fetch");
 // app.get('/', (req, res) => {
 //   res.sendFile(__dirname + '/index.html');
 // });
@@ -21,6 +24,13 @@ app.set("views", "./src/views");
 //   res.io = io;
 //   next();
 // });
+
+global.io.use((socket, next) => {
+  console.log(socket.id);
+  const { token } = socket.handshake.headers;
+  if (token && token === "bearer:access-token") return next();
+  next(new Error("Invalid token"));
+});
 global.io.on("connection", SocketServices.connection);
 app.use(require("./routes/chat.route"));
 http.listen(port, () => {
